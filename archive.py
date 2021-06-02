@@ -2,8 +2,8 @@
 
 
 class Species:
-    def init(self,genotype,pos,fitness):
-        self.genoptype = genotype
+    def __init__(self,genotype,pos,fitness):
+        self.genotype = genotype
         self.pos = pos
         self.fitness = fitness
 
