@@ -23,7 +23,7 @@ def pos(inputs):
 
 def map_elite_strategy(game = "breakout", NUM_FRAMES = 1000, MAX_EVALS = 5000):
 
-    env = Environment("breakout", sticky_action_prob=0.0, random_seed=0)
+    env = Environment(game, sticky_action_prob=0.0, random_seed=0)
     env.reset()
 
     in_channels = env.state_shape()[2]
