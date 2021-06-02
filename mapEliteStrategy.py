@@ -37,11 +37,13 @@ def map_elite_strategy(game = "breakout", NUM_FRAMES = 1000, MAX_EVALS = 5000):
     policy_net.set_params(genes)
 
 
-    archive = {}
+    archive = {} #archive (dictionnaire)
 
     for i in range(MAX_EVALS):
         finess, behaviour = play(policy_net,game)
+
         specie = Species(genes, behaviour, fitness)
+
         addToArchive(archive, specie)
 
         gene = mutate(archive)
