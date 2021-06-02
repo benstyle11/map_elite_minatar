@@ -63,22 +63,31 @@ def get_state(s):
 
 
 
-def play(policy_net, display=False):
-    env = Environment("breakout", sticky_action_prob=0.0, random_seed=0)
+def play(policy_net,game = "breakout", display=False):
+    env = Environment(game, sticky_action_prob=0.0, random_seed=0)
     env.reset()
     is_terminated = False
     total_reward = 0.0
     t = 0
+
+    behaviour = np.zeros(env.num_actions) #The behaviour of the agent
+
     while (not is_terminated) and t < NUM_FRAMES:
         s = get_state(env.state())
         with torch.no_grad():
             action = torch.argmax(policy_net(s))
+
+        behaviour[action] += 1 ## add one to the corresponding behaviour
+
         reward, is_terminated = env.act(action)
         total_reward += reward
         t += 1
         if display:
             env.display_state(1)
-    return total_reward
+
+    behaviour = behaviour/np.sum(behaviour) #normalize the behaviour by the nb of inputs
+
+    return total_reward, behaviour
 
 
 
