@@ -1,4 +1,5 @@
-
+import random
+import numpy as np
 
 
 class Species:
@@ -17,3 +18,15 @@ def addToArchive(archive, specie):
 
 def mutate(archive):
     pass
+
+
+#return un genotype
+def crossover(archive):
+    rate = 0.5
+    parent1 = random.choice(list(archive.values())
+    parent2 = random.choice(list(archive.values())
+    genotype_child = parent1.genotype
+    for i in range(len(genotype_child)):
+        if random.random()>rate:
+            genotype_child[i] = parent2.genotype[i]
+    return genotype_child
