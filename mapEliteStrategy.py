@@ -22,7 +22,7 @@ def pos(behaviour):
 
     npoints = 20
 
-    return np.floor(20*staticite)
+    return np.floor(npoints*staticite)
 
 
 
@@ -41,11 +41,13 @@ def map_elite_strategy(game = "breakout", NUM_FRAMES = 1000, MAX_EVALS = 5000):
 
     policy_net.set_params(genes)
 
-
     archive = {} #archive (dictionnaire)
 
     for i in range(MAX_EVALS):
+
         fitness, behaviour = play(policy_net,game)
+
+
 
         specie = Species(genes, pos(behaviour) , fitness)
 
@@ -58,6 +60,7 @@ def map_elite_strategy(game = "breakout", NUM_FRAMES = 1000, MAX_EVALS = 5000):
     listIndiv = archive.values()
 
     print([i.fitness for i in listIndiv])
+    print(len(listIndiv))
 
 
 map_elite_strategy()
