@@ -51,10 +51,13 @@ def map_elite_strategy(game = "breakout", NUM_FRAMES = 1000, MAX_EVALS = 5000):
 
         addToArchive(archive, specie)
 
-        gene = np.random.randn(taille_genes)
+        genes = np.random.randn(taille_genes)
 
     print(random.choice(archive))
-    print(max(archive.values().))
+
+    listIndiv = archive.values()
+
+    print([i.fitness for i in listIndiv])
 
 
 map_elite_strategy()
