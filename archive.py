@@ -23,18 +23,18 @@ def mutate(archive):
 #return un genotype
 def crossover_basic(archive):
     rate = 0.5
-    parent1 = random.choice(list(archive.values()))
-    parent2 = random.choice(list(archive.values()))
+    parent1 = np.random.choice(list(archive.values()))
+    parent2 = np.random.choice(list(archive.values()))
     genotype_child = parent1.genotype
     for i in range(len(genotype_child)):
-        if random.random()>rate:
+        if np.random.random()>rate:
             genotype_child[i] = parent2.genotype[i]
     return genotype_child
                             
 def crossover_one_point(archive):
-    parent1 = random.choice(list(archive.values()))
-    parent2 = random.choice(list(archive.values()))
+    parent1 = np.random.choice(list(archive.values()))
+    parent2 = np.random.choice(list(archive.values()))
     genotype_child = parent1.genotype
-    n = random.randint(0,len(genotype_child)-1)
+    n = np.random.randint(0,len(genotype_child))
     genotype_child[n:] = parent2.genotype[n:]
-    return genotype_child                         
+    return genotype_child                     
