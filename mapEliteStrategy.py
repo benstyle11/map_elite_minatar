@@ -16,8 +16,13 @@ import numpy as np
 
 
 
-def pos(inputs):
-    return inputs/np.sum(inputs)
+def pos(behaviour):
+
+    staticite = behaviour[0]/np.sum(behaviour) #normalize the behaviour by the nb of inputs
+
+    npoints = 20
+
+    return np.floor(20*staticite)
 
 
 
@@ -40,14 +45,19 @@ def map_elite_strategy(game = "breakout", NUM_FRAMES = 1000, MAX_EVALS = 5000):
     archive = {} #archive (dictionnaire)
 
     for i in range(MAX_EVALS):
-        finess, behaviour = play(policy_net,game)
+        fitness, behaviour = play(policy_net,game)
 
-        specie = Species(genes, behaviour, fitness)
+        specie = Species(genes, pos(behaviour) , fitness)
 
         addToArchive(archive, specie)
 
-        gene = mutate(archive)
+        gene = np.random.randn(taille_genes)
 
+    print(random.choice(archive))
+    print(max(archive.values().))
+
+
+map_elite_strategy()
 
 
 
