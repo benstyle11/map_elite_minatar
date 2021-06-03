@@ -70,7 +70,7 @@ def play(policy_net,game = "breakout", display=False):
     total_reward = 0.0
     t = 0
 
-    behaviour = np.zeros(env.num_actions) #The behaviour of the agent
+    behaviour = np.zeros(env.num_actions()) #The behaviour of the agent
 
     while (not is_terminated) and t < NUM_FRAMES:
         s = get_state(env.state())
@@ -84,8 +84,6 @@ def play(policy_net,game = "breakout", display=False):
         t += 1
         if display:
             env.display_state(1)
-
-    behaviour = behaviour/np.sum(behaviour) #normalize the behaviour by the nb of inputs
 
     return total_reward, behaviour
 
