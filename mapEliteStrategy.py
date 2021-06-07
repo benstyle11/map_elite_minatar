@@ -1,6 +1,5 @@
 
-from archive import *
-from Agent import *
+
 
 import torch
 import torch.nn as nn
@@ -13,6 +12,9 @@ from minatar import Environment
 import matplotlib.pyplot as plt
 import numpy as np
 
+from archive import *
+from Agent import *
+
 
 
 
@@ -20,9 +22,9 @@ def pos(behaviour):
 
     staticite = behaviour[0]/np.sum(behaviour) #normalize the behaviour by the nb of inputs
 
-    npoints = 20
+    npoints = 9
 
-    return np.floor(npoints*staticite)
+    return np.floor(npoints*staticite) #np.floor(npoints*staticite)
 
 
 
@@ -45,6 +47,8 @@ def map_elite_strategy(game = "breakout", NUM_FRAMES = 1000, MAX_EVALS = 5000):
 
     for i in range(MAX_EVALS):
 
+        policy_net.set_params(genes)
+
         fitness, behaviour = play(policy_net,game)
 
 
@@ -53,17 +57,19 @@ def map_elite_strategy(game = "breakout", NUM_FRAMES = 1000, MAX_EVALS = 5000):
 
         addToArchive(archive, specie)
 
-        genes = np.random.randn(taille_genes)
+        genes = mutate(archive)
 
-    print(random.choice(archive))
+
 
     listIndiv = archive.values()
 
     print([i.fitness for i in listIndiv])
     print(len(listIndiv))
+    return archive
 
 
-map_elite_strategy()
+archive = map_elite_strategy()
+
 
 
 
