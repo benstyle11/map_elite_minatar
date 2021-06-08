@@ -15,7 +15,7 @@ import numpy as np
 from archive import *
 from Agent import *
 
-
+NB_IND = 20
 '''
 def pos(behaviour, game):
     n_points = 1
@@ -48,15 +48,22 @@ def map_elite_strategy(game = "breakout", NUM_FRAMES = 1000, MAX_EVALS = 5000):
     num_actions = env.num_actions()
     policy_net = Network(in_channels, num_actions).to(device)
     genes = policy_net.get_params()
-
     taille_genes = len(genes)
     genes = np.random.randn(taille_genes)
 
-    policy_net.set_params(genes)
-
+    '''
+    NB_IND = 20
+    taille_genes = len(genes)
+    genes_list = [np.random.randn(taille_genes) for i in range(NB_IND)]
+    policy_net_list = 
+    for genes in genes_list:
+        policy_net = Network(in_channels, num_actions).to(device)
+        policy_net.set_params(genes)
+    '''   
+        
     archive = {} #archive (dictionnaire)
-
-    for i in range(MAX_EVALS):
+    for i in range(NB_IND):
+        genes = np.random.randn(taille_genes)
 
         policy_net.set_params(genes)
 
@@ -68,7 +75,21 @@ def map_elite_strategy(game = "breakout", NUM_FRAMES = 1000, MAX_EVALS = 5000):
 
         addToArchive(archive, specie)
 
-        genes = mutate(archive)
+
+
+    for i in range(MAX_EVALS-NB_IND):
+
+        policy_net.set_params(genes)
+
+        fitness, behaviour = play(policy_net,game)
+
+
+
+        specie = Species(genes, pos(behaviour,game) , fitness)
+
+        addToArchive(archive, specie)
+
+        genes = mutate(archive, cross = True)
 
 
 
@@ -80,8 +101,11 @@ def map_elite_strategy(game = "breakout", NUM_FRAMES = 1000, MAX_EVALS = 5000):
     print(len(listIndiv))
     return archive
 
-
 archive = map_elite_strategy()
+print(archive)
+
+
+
 
 
 

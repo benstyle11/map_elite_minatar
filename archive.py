@@ -60,12 +60,12 @@ def mutate(archive, cross = False, move_away = True):
     nb_genes = len(new_genotype)
 
     #Adding a random noise
-    scale_factor = 0.1
-    noise = np.random.randn(nb_genes)
-    new_genotype = np.mod(new_genotype \
-                     + 1 \
-                     + noise * scale_factor, 2) \
-                   - 1
+    #scale_factor = 0.3
+    #noise = np.random.randn(nb_genes)
+    #new_genotype = np.mod(new_genotype \
+    #                 + 1 \
+    #                 + noise * scale_factor, 2) \
+    #               - 1
 
     if move_away:
         #Going away from another specie
@@ -79,3 +79,11 @@ def mutate(archive, cross = False, move_away = True):
                     - 1
 
     return(new_genotype)
+
+def main():
+    ind_1 = Species()
+    ind_2 = Species()
+
+if __name__ == "__main__":
+    # execute only if run as a script
+    main()    
