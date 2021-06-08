@@ -58,6 +58,13 @@ def get_state(s):
     return (torch.tensor(s, device=device).permute(2, 0, 1)).unsqueeze(0).float()
 
 
+def distBall(state):
+
+    ballx = np.where(state[:,:,1] == 1)[0][0]
+
+    pos_player = np.where(state[:,:,0] == 1)[0][0]
+    return  np.abs(ballx - pos_player)
+
 
 
 
@@ -70,20 +77,28 @@ def play(policy_net,game = "breakout", display=False):
     total_reward = 0.0
     t = 0
 
-    behaviour = np.zeros(env.num_actions()) #The behaviour of the agent
+    #behaviour = np.zeros(env.num_actions()) #The behaviour of the agent
+    behaviour = 0
+    n = 0.
+    largeur = len(env.state())
 
     while (not is_terminated) and t < NUM_FRAMES:
         s = get_state(env.state())
         with torch.no_grad():
             action = torch.argmax(policy_net(s))
 
-        behaviour[action] += 1 ## add one to the corresponding behaviour
+        #behaviour[action] += 1 ## add one to the corresponding behaviour
+        behaviour += distBall(env.state())
+        n += 1
 
         reward, is_terminated = env.act(action)
         total_reward += reward
         t += 1
         if display:
             env.display_state(1)
+
+
+    behaviour /= n
 
     return total_reward, behaviour
 

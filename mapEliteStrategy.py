@@ -16,15 +16,26 @@ from archive import *
 from Agent import *
 
 
+'''
+def pos(behaviour, game):
+    n_points = 1
 
+    if game == "breakout" :
+        staticite = (behaviour[0] + behaviour[2] + behaviour[3] + behaviour[5]) \
+            / np.sum(behaviour) #normalize the behaviour by the nb of inputs
+        position = np.floor(n_points*staticite)
 
-def pos(behaviour):
+    else :
+        taux_up = behaviour[2] / np.sum(behaviour)
+        taux_down = behaviour[4] / np.sum(behaviour)
+        position = (np.floor(n_points*taux_up), np.floor(n_points*taux_down))
 
-    staticite = behaviour[0]/np.sum(behaviour) #normalize the behaviour by the nb of inputs
+    return position
+'''
 
-    npoints = 9
+def pos(behaviour,game):
 
-    return np.floor(npoints*staticite) #np.floor(npoints*staticite)
+    return np.floor(behaviour)
 
 
 
@@ -53,7 +64,7 @@ def map_elite_strategy(game = "breakout", NUM_FRAMES = 1000, MAX_EVALS = 5000):
 
 
 
-        specie = Species(genes, pos(behaviour) , fitness)
+        specie = Species(genes, pos(behaviour,game) , fitness)
 
         addToArchive(archive, specie)
 
@@ -62,6 +73,8 @@ def map_elite_strategy(game = "breakout", NUM_FRAMES = 1000, MAX_EVALS = 5000):
 
 
     listIndiv = archive.values()
+
+    play(policy_net,game,True)
 
     print([i.fitness for i in listIndiv])
     print(len(listIndiv))
