@@ -97,11 +97,10 @@ def play(policy_net,game = "breakout", display=False):
         if display:
             env.display_state(1)
 
-
-    behaviour /= n
+    
+    behaviour = int(behaviour/(total_reward+1))
 
     return total_reward, behaviour
-
 
 
 
