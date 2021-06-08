@@ -16,9 +16,9 @@ from archive import *
 from Agent import *
 
 
-
+'''
 def pos(behaviour, game):
-    n_points = 7
+    n_points = 1
 
     if game == "breakout" :
         staticite = (behaviour[0] + behaviour[2] + behaviour[3] + behaviour[5]) \
@@ -31,6 +31,11 @@ def pos(behaviour, game):
         position = (np.floor(n_points*taux_up), np.floor(n_points*taux_down))
 
     return position
+'''
+
+def pos(behaviour,game):
+
+    return np.floor(behaviour)
 
 
 
