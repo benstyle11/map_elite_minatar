@@ -45,9 +45,6 @@ def crossover_one_point(archive):
 
 
 
-
-
-
 def mutate(archive, cross = False, move_away = True):
     specie = random.choice(list(archive.values()))
     new_genotype = specie.genotype
@@ -62,17 +59,17 @@ def mutate(archive, cross = False, move_away = True):
     nb_genes = len(new_genotype)
 
     #Adding a random noise
-    """
-    scale_factor = 0.3
+    '''
+    scale_factor = 1
     noise = np.random.randn(nb_genes)
     new_genotype = np.mod(new_genotype \
                      + 1 \
                      + noise * scale_factor, 2) \
                    - 1
-    """
+    '''
     if move_away:
         #Going away from another specie
-        scale_factor = 1
+        scale_factor = 0.5
         noise = np.random.randn(nb_genes)
         other_specie = random.choice(list(archive.values()))
         other_genotype = other_specie.genotype
@@ -80,12 +77,19 @@ def mutate(archive, cross = False, move_away = True):
                         + 1 \
                         + (new_genotype - other_genotype) * noise * scale_factor, 2) \
                     - 1
-
+    
     return(new_genotype)
 
+def mutate_classic(archive):
+    dad = random.choice(list(archive.values()))
+    new_genes = dad.genotype.copy()
+    for i in range(len(dad.genotype)):
+        if random.random()>0.5:
+            new_genes[i] = np.mod(dad.genotype[i]*np.random.randn()*0.2+1, 2)-1
+    return new_genes
+
 def main():
-    ind_1 = Species()
-    ind_2 = Species()
+    pass
 
 if __name__ == "__main__":
     # execute only if run as a script

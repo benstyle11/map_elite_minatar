@@ -16,7 +16,7 @@ from archive import *
 from Agent import *
 
 NB_IND = 20
-CROSS = False
+CROSS = True
 '''
 def pos(behaviour, game):
     n_points = 1
@@ -40,7 +40,7 @@ def pos(behaviour,game):
 
 
 
-def map_elite_strategy(game = "breakout", NUM_FRAMES = 1000, MAX_EVALS = 5000 ,cross = CROSS):
+def map_elite_strategy(game = "breakout", NUM_FRAMES = 1000, MAX_EVALS = 1000 ,cross = CROSS):
 
     env = Environment(game, sticky_action_prob=0.0, random_seed=0)
     env.reset()
@@ -78,6 +78,8 @@ def map_elite_strategy(game = "breakout", NUM_FRAMES = 1000, MAX_EVALS = 5000 ,c
 
 
     for i in range(MAX_EVALS-NB_IND):
+        genes_mutated = mutate_classic(archive)
+        genes = genes_mutated.copy()
 
         policy_net.set_params(genes)
 
@@ -86,8 +88,6 @@ def map_elite_strategy(game = "breakout", NUM_FRAMES = 1000, MAX_EVALS = 5000 ,c
         specie = Species(genes, pos(behaviour,game) , fitness)
 
         addToArchive(archive, specie)
-
-        genes = mutate(archive, cross)
 
 
 
@@ -103,22 +103,23 @@ def display_best(archive):
     
     #Play the best player 
     listIndiv = list(archive.values())
-    #for ind in listIndiv:
-    #    if ind.fitness > best.fitness:
-    #        best = ind
-    #Generate the player
+    best = listIndiv[0]
     for ind in listIndiv:
-        env = Environment("breakout", sticky_action_prob=0.0, random_seed=0)
-        env.reset()
-        in_channels = env.state_shape()[2]
-        num_actions = env.num_actions()
-        policy_net = Network(in_channels, num_actions).to(device)
-        policy_net.set_params(ind.genotype)
-        play(policy_net,"breakout",True)      
+        if ind.fitness > best.fitness:
+            best = ind
+    #Generate the player
+    env = Environment("breakout", sticky_action_prob=0.0, random_seed=0)
+    env.reset()
+    in_channels = env.state_shape()[2]
+    num_actions = env.num_actions()
+    policy_net = Network(in_channels, num_actions).to(device)
+    policy_net.set_params(best.genotype)
+    play(policy_net,"breakout",True)     
 
 if __name__ == "__main__":
     # execute only if run as a script
-    archive = map_elite_strategy() 
+    archive = map_elite_strategy(MAX_EVALS = 5000)
+    display_best(archive)   
 
 
 

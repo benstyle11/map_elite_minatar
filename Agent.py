@@ -60,7 +60,7 @@ def get_state(s):
 
 def distBall(state):
 
-    ballx = np.where(state[:,:,1] == 1)[0][0]
+    ballx = np.where(state[:,:,1] == 1)[1][0]
 
     pos_player = np.where(state[:,:,0] == 1)[0][0]
     return  np.abs(ballx - pos_player)
@@ -92,13 +92,14 @@ def play(policy_net,game = "breakout", display=False):
         n += 1
 
         reward, is_terminated = env.act(action)
+        #print(reward)
         total_reward += reward
         t += 1
         if display:
             env.display_state(1)
 
     
-    behaviour = int(behaviour/(total_reward+1))
+    behaviour = behaviour/(total_reward+1)
 
     return total_reward, behaviour
 
