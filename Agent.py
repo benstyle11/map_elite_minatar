@@ -77,8 +77,8 @@ def play(policy_net,game = "breakout", display=False):
     total_reward = 0.0
     t = 0
 
-    #behaviour = np.zeros(env.num_actions()) #The behaviour of the agent
-    behaviour = 0
+    behaviour_act = np.zeros(env.num_actions()) #The behaviour of the agent
+    behaviour_dist = 0
     n = 0.
     largeur = len(env.state())
 
@@ -87,8 +87,10 @@ def play(policy_net,game = "breakout", display=False):
         with torch.no_grad():
             action = torch.argmax(policy_net(s))
 
-        #behaviour[action] += 1 ## add one to the corresponding behaviour
-        behaviour += distBall(env.state())
+        behaviour_act[action] += 1 ## add one to the corresponding behaviour
+
+        if game == "breakout":
+            behaviour_dist += distBall(env.state())
         n += 1
 
         reward, is_terminated = env.act(action)
@@ -98,9 +100,10 @@ def play(policy_net,game = "breakout", display=False):
             env.display_state(1)
 
 
-    behaviour /= n
+    behaviour_dist /= n
+    behaviour_act /= n
 
-    return total_reward, behaviour
+    return total_reward, (behaviour_act,behaviour_dist)
 
 
 
